@@ -4,6 +4,6 @@ def main [] {
   sudo git commit -am 'update flake inputs'
   sudo git push
   sudo nixos-rebuild switch
-  nix profile diff-closures --profile /nix/var/nix/profiles/system | split row "\n\n" | reverse | get 1
+  nix profile diff-closures --profile /nix/var/nix/profiles/system | split row "\n\n" | last 2 | first
   cd -
 }
