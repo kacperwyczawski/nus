@@ -16,7 +16,6 @@ def main [] {
     | str trim
     | get 0 }
   )
-  cd -
   let changes = (
     nvd diff
       $'/nix/var/nix/profiles/system-($generations.0)-link'
@@ -25,4 +24,5 @@ def main [] {
   print $changes
   sudo git commit -am 'update flake inputs' -m $changes
   sudo git push
+  cd $env.OLDPWD
 }
