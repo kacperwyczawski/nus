@@ -4,7 +4,9 @@
 def main [] {
   cd /etc/nixos
   sudo nix flake update
+  print ''
   sudo nixos-rebuild switch
+  print ''
   let generations = (
     sudo nix-env
       --list-generations
@@ -22,7 +24,9 @@ def main [] {
       $'/nix/var/nix/profiles/system-($generations.1)-link'
   )
   print $changes
+  print ''
   sudo git commit -am 'update flake inputs' -m $changes
+  print ''
   sudo git push
   cd $env.OLDPWD
 }
