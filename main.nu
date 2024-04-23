@@ -1,14 +1,19 @@
 # NUS: NixOS Update Script
 # It's a simple script that updates your flake-based system and pushes changes to git.
 # Additionally it displays which packages changed.
-def main [] {
-  cd /etc/nixos
-  sudo nix flake update
+def main [
+  --path (-p): string = '/etc/nixos'
+] {
+  if not ($path | path exists) {
+    print 'Path does not exist'
+    return
+  }
+  nix flake update $path
   print ''
-  sudo nixos-rebuild switch
+  nixos-rebuild switch
   print ''
   let generations = (
-    sudo nix-env
+    nix-env
       --list-generations
       --profile /nix/var/nix/profiles/system
     | lines
@@ -25,8 +30,7 @@ def main [] {
   )
   print $changes
   print ''
-  sudo git commit -am 'update flake inputs' -m $changes
+  git -C $path commit -am 'update flake inputs' -m $changes
   print ''
-  sudo git push
-  cd $env.OLDPWD
+  git -C $path push
 }
