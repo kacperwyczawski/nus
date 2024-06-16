@@ -8,7 +8,8 @@ def main [
     print 'Path does not exist'
     return
   }
-  nix flake update $path
+  cd $path
+  nix flake update
   print ''
   nixos-rebuild switch
   print ''
@@ -30,7 +31,7 @@ def main [
   )
   print $changes
   print ''
-  git -C $path commit -am 'update flake inputs' -m $changes
+  git commit -am 'update flake inputs' -m $changes
   print ''
-  git -C $path push
+  git push
 }
